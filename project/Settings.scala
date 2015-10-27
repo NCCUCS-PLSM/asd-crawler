@@ -38,7 +38,7 @@ object Settings {
       "-target", "1.8",
       "-encoding", "UTF-8",
       "-Xlint:all",
-      "-Xdoclint:all",
+      //"-Xdoclint:all",
       "-XDignore.symbol.file",
       "-g",
       "-deprecation"
