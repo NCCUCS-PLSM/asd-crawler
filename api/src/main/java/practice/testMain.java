@@ -1,3 +1,5 @@
+package practice;
+
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 

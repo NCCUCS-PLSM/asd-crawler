@@ -1,3 +1,5 @@
+package practice;
+
 import akka.actor.*;
 import akka.event.*;
 
