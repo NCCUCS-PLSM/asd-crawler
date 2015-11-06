@@ -5,18 +5,18 @@ import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
-public class rootActor extends UntypedActor {
+public class Boss extends UntypedActor {
 
     LoggingAdapter log = Logging.getLogger(getContext().system(), this);
 
     public static Props props() {
-        return Props.create(rootActor.class);
+        return Props.create(Boss.class);
     }
 
     public static class Initialize {
     }
 
-    public rootActor() {
+    public Boss() {
 
     }
 
@@ -30,7 +30,7 @@ public class rootActor extends UntypedActor {
             if (((String) message).equals("from remote")) {
 
                 log.info("Got message from remote " + getSender().toString());
-                getSender().tell("stop", getSelf());
+                getSender().tell("You go kill yourself", getSelf());
 
             } else {
 
@@ -41,10 +41,12 @@ public class rootActor extends UntypedActor {
 
         } else if (message instanceof Initialize) {
 
-            log.info("Root is initialized as " + getSelf().toString());
+            log.info("Boss is initialized as " + getSelf().toString());
 
         } else {
+
             unhandled(message);
+
         }
 
     }

@@ -6,12 +6,12 @@ import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
-public class rootActor extends UntypedActor {
+public class Boss extends UntypedActor {
 
     LoggingAdapter log = Logging.getLogger(getContext().system(), this);
 
     public static Props props() {
-        return Props.create(rootActor.class);
+        return Props.create(Boss.class);
     }
 
     @Override
@@ -21,19 +21,18 @@ public class rootActor extends UntypedActor {
 
             if (((String) message).equals("Look up remote!")) {
 
-                ActorSelection remoteRoot
+                ActorSelection backendBoss
                         = context()
-                        .actorSelection("akka.tcp://asd-crawler-backend@noel.plsm.cs.nccu.edu.tw:1688/user/back-root");
+                        .actorSelection("akka.tcp://asd-crawler-backend@noel.plsm.cs.nccu.edu.tw:1688/user/Boss");
 
-                remoteRoot.tell("from remote", getSelf());
+                backendBoss.tell("from remote", getSelf());
 
-            } else if (((String) message).startsWith("What did you say, ")) {
+            } else if (((String) message).startsWith("What")) {
 
-                log.info("Remote root didn't know what I was saying ...");
+                log.info("Remote Boss didn't know what I was saying ...");
 
-            } else if (((String) message).equals("stop")) {
+            } else if (((String) message).equals("You go kill yourself")) {
 
-                getContext().stop(getSelf());
                 getContext().system().shutdown();
 
             } else {
@@ -49,6 +48,6 @@ public class rootActor extends UntypedActor {
 
     @Override
     public void postStop() {
-        log.info("I am stopped by remote root ...");
+        log.info("I am stopped by remote Boss ...");
     }
 }
