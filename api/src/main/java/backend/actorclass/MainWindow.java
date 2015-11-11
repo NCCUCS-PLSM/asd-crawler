@@ -33,7 +33,7 @@ public class MainWindow extends UntypedActor {
     public void onReceive(Object message) throws Exception {
         if (message instanceof String) {
 
-            log.info((String) message + "");
+            log.info("Got " + (String) message);
 
             switch ((String) message) {
 
@@ -67,7 +67,6 @@ public class MainWindow extends UntypedActor {
 
                 default:
                     break;
-
             }
         }
     }

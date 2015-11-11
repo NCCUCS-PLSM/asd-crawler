@@ -25,11 +25,11 @@ public class ContactWindow extends UntypedActor {
             switch ((String) message) {
 
                 case "initialize":
-                    getSender().tell("here comes the contact window", getSelf());
+                    getSender().tell("contact window", getSelf());
                     break;
 
                 default:
-                    getSender().tell("SAMPLE " + this.methodType + " RESPONSE", getSelf());
+                    getSender().tell("REQ: " + (String) message + " -> SAMPLE " + this.methodType + " RESPONSE", getSelf());
                     break;
             }
         } else {
