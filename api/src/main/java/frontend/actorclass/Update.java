@@ -1,83 +1,54 @@
 package frontend.actorclass;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import scala.concurrent.Await;
+import akka.pattern.Patterns;
+import akka.util.Timeout;
+import frontend.main;
+import frontend.taskclass.Task;
 import scala.concurrent.Future;
+import scala.concurrent.duration.Duration;
 
-import static akka.pattern.Patterns.ask;
-
-public class Update extends UntypedActor implements CRUD {
+public class Update extends UntypedActor {
 
     LoggingAdapter log = Logging.getLogger(getContext().system(), this);
 
-    public static Props props(String request) {
-        return Props.create(Update.class, request);
+    public static Props props(String request, Task task) {
+        return Props.create(Update.class, request, task);
     }
 
-    public Update(String request) {
+    public Update(String request, Task task) {
         this.methodType = "UPDATE";
+        this.futureContainer = task;
         this.request = request;
-        this.response = null;
-        this.contactWindow = null;
     }
 
     private String methodType;
-
+    private Task futureContainer;
     private String request;
-    private Future response;
-
-    private ActorRef contactWindow;
-
-    public String getMethodType() {
-        return this.methodType;
-    }
-
-    public String getRequest() {
-        return this.request;
-    }
-
-    public Future getResponseFuture() {
-        return this.response;
-    }
-
-    public String getResponseContent() throws Exception {
-        return (String) Await.result(this.response, this.timeout.duration());
-    }
-
-    @Override
-    public ActorRef getBackendContactWindow() {
-        return this.contactWindow;
-    }
 
     @Override
     public void onReceive(Object message) throws Exception {
         if (message instanceof String) {
 
             switch ((String) message) {
-                case "call backend main window":
-                    ActorSelection backendMainWindow
-                            = context()
-                            .actorSelection(this.backendMainWindow);
-
-                    backendMainWindow.tell("open " + this.methodType, getSelf());
+                case "initialize":
+                    main.foreman.tell("open " + this.methodType, getSelf());
 
                     break;
 
-                case "here comes the contact window":
-                    this.contactWindow = getSender();
-                    this.response = ask(this.contactWindow, this.request, this.timeout);
-
-                    log.info("got contact window " + this.contactWindow.toString());
+                case "contact window":
+                    Timeout timeout = new Timeout(Duration.create(5, "seconds"));
+                    Future<Object> answer = Patterns.ask(getSender(), this.request, timeout);
+                    futureContainer.setFuture(answer);
 
                     break;
 
                 default:
 
+                    log.info((String) message);
                     break;
             }
 
