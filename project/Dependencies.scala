@@ -8,7 +8,7 @@ object Dependencies {
 
   lazy val apiDependencies = Seq(
     "com.typesafe.akka" %% "akka-actor" % "2.4.0",
-    "com.typesafe.akka" %% "akka-remote" % "2.4.0",
-    "com.linkedin.parseq" % "parseq" % "2.1.0"
+    "com.typesafe.akka" %% "akka-remote" % "2.4.0"
+//    "com.linkedin.parseq" % "parseq" % "2.1.0"
   )
 }

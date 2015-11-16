@@ -35,18 +35,18 @@ public class main {
         foreman = system.actorOf(Foreman.props(), "foreman");
 
         BasicTask createTask = new CreateTask();
-        ActorRef create = system.actorOf(Create.props("THIS IS A REQ", createTask), "create");
+        ActorRef create = system.actorOf(Create.props("THIS IS A CREATE REQ", createTask), "create");
         create.tell("initialize", null);
 
         BasicTask readTask = new ReadTask();
         ActorRef read = system.actorOf(Read.props("THIS IS A READ REQ", readTask), "read");
         read.tell("initialize", null);
 
-//        createTask.getFuture()
-//                .onSuccess(new PrintResult<>(), system.dispatcher());
-//
-//        readTask.getFuture()
-//                .onSuccess(new PrintResult<>(), system.dispatcher());
+        createTask.getFuture()
+                .onSuccess(new PrintResult<>(), system.dispatcher());
+
+        readTask.getFuture()
+                .onSuccess(new PrintResult<>(), system.dispatcher());
 
         system.awaitTermination();
     }
