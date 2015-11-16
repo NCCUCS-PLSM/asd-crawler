@@ -1,5 +1,5 @@
 package frontend.taskclass;
 
-public class CreateTask extends Task {
+public class CreateTask extends BasicTask {
 
 }

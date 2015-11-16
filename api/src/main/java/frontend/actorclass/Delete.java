@@ -7,7 +7,7 @@ import akka.event.LoggingAdapter;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
 import frontend.main;
-import frontend.taskclass.Task;
+import frontend.taskclass.BasicTask;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
@@ -15,18 +15,18 @@ public class Delete extends UntypedActor {
 
     LoggingAdapter log = Logging.getLogger(getContext().system(), this);
 
-    public static Props props(String request, Task task) {
+    public static Props props(String request, BasicTask task) {
         return Props.create(Delete.class, request, task);
     }
 
-    public Delete(String request, Task task) {
+    public Delete(String request, BasicTask task) {
         this.methodType = "DELETE";
         this.futureContainer = task;
         this.request = request;
     }
 
     private String methodType;
-    private Task futureContainer;
+    private BasicTask futureContainer;
     private String request;
 
     @Override

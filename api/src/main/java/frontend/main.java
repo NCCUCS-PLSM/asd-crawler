@@ -9,7 +9,7 @@ import frontend.actorclass.Foreman;
 import frontend.actorclass.Read;
 import frontend.taskclass.CreateTask;
 import frontend.taskclass.ReadTask;
-import frontend.taskclass.Task;
+import frontend.taskclass.BasicTask;
 
 public class main {
 
@@ -31,19 +31,19 @@ public class main {
         final ActorSystem system = ActorSystem.create("asd-crawler-frontend", ConfigFactory.load("frontend"));
         foreman = system.actorOf(Foreman.props(), "foreman");
 
-        Task createTask = new CreateTask();
+        BasicTask createTask = new CreateTask();
         ActorRef create = system.actorOf(Create.props("THIS IS A REQ", createTask), "create");
         create.tell("initialize", null);
 
-        Task readTask = new ReadTask();
+        BasicTask readTask = new ReadTask();
         ActorRef read = system.actorOf(Read.props("THIS IS A READ REQ", readTask), "read");
         read.tell("initialize", null);
 
-        createTask.getFuture()
-                .onSuccess(new PrintResult<>(), system.dispatcher());
-
-        readTask.getFuture()
-                .onSuccess(new PrintResult<>(), system.dispatcher());
+//        createTask.getFuture()
+//                .onSuccess(new PrintResult<>(), system.dispatcher());
+//
+//        readTask.getFuture()
+//                .onSuccess(new PrintResult<>(), system.dispatcher());
 
         system.awaitTermination();
     }

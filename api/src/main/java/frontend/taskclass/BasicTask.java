@@ -1,36 +1,26 @@
 package frontend.taskclass;
 
-import akka.util.Timeout;
-import scala.concurrent.Await;
 import scala.concurrent.Future;
 
-import scala.concurrent.duration.Duration;
-
-public class Task {
+public class BasicTask {
 
     protected Future<Object> future;
     protected boolean ready;
 
-    public Task() {
+    public BasicTask() {
         this.future = null;
         this.ready = false;
     }
 
-    public void checkidle() throws InterruptedException {
+    private void isReady() throws InterruptedException {
         while (!this.ready) {
             Thread.sleep(0);
         }
     }
 
     public Future getFuture() throws InterruptedException {
-        checkidle();
+        this.isReady();
         return this.future;
-    }
-
-    public Object getResult() throws Exception {
-        checkidle();
-        Timeout timeout = new Timeout(Duration.create(5, "seconds"));
-        return Await.result(future, timeout.duration());
     }
 
     public void setFuture(Future<Object> future) {

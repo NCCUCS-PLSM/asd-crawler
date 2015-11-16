@@ -7,7 +7,7 @@ import akka.event.LoggingAdapter;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
 import frontend.main;
-import frontend.taskclass.Task;
+import frontend.taskclass.BasicTask;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
@@ -15,18 +15,18 @@ public class Create extends UntypedActor {
 
     LoggingAdapter log = Logging.getLogger(getContext().system(), this);
 
-    public static Props props(String request, Task task) {
+    public static Props props(String request, BasicTask task) {
         return Props.create(Create.class, request, task);
     }
 
-    public Create(String request, Task task) {
+    public Create(String request, BasicTask task) {
         this.methodType = "CREATE";
         this.futureContainer = task;
         this.request = request;
     }
 
     private String methodType;
-    private Task futureContainer;
+    private BasicTask futureContainer;
     private String request;
 
     @Override

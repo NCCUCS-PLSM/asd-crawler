@@ -1,5 +1,5 @@
 package frontend.taskclass;
 
-public class DeleteTask extends Task {
+public class DeleteTask extends BasicTask {
 
 }
