@@ -15,6 +15,8 @@ public class main {
 
     public static ActorRef foreman;
 
+    public static ActorSystem system;
+
     public static String backendPath;
 
     public static class PrintResult<T> extends OnSuccess<T> {
@@ -28,7 +30,8 @@ public class main {
 
         backendPath = "akka.tcp://asd-crawler-backend@127.0.0.1:1688";
 
-        final ActorSystem system = ActorSystem.create("asd-crawler-frontend", ConfigFactory.load("frontend"));
+        system = ActorSystem.create("asd-crawler-frontend", ConfigFactory.load("frontend"));
+
         foreman = system.actorOf(Foreman.props(), "foreman");
 
         BasicTask createTask = new CreateTask();
